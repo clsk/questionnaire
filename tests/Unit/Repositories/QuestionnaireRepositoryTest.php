@@ -8,7 +8,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Repositories\QuestionRepository;
 use App\Repositories\QuestionnaireRepository;
-// use Illuminate\Support\Carbon;
 use Carbon\Carbon;
 
 class QuestionnaireRepositoryTest extends TestCase
@@ -108,15 +107,6 @@ class QuestionnaireRepositoryTest extends TestCase
             ]));
         });
 
-        $questionsAnswers = [];
-        foreach ($questions as $question) {
-            $answers = $question->answers;
-            $questionsAnswers[] = [
-                'question_id' => $question->id,
-                'answer_id' => $question->answers[rand(0, $answersCount-1)]->id
-            ];
-        }
-
         // Assert we get answers
         $questionnaires = QuestionnaireRepository::getAllAnswersForUser($user);
         $this->assertEquals($questionnairesPerPeriodCount*$answersCount*2, $questionnaires->count());
@@ -170,15 +160,6 @@ class QuestionnaireRepositoryTest extends TestCase
                 'answer_id' => $questions[$questionIndex]->answers[rand(0, $answersCount-1)]->id, // choose the first answer
             ]));
         });
-
-        $questionsAnswers = [];
-        foreach ($questions as $question) {
-            $answers = $question->answers;
-            $questionsAnswers[] = [
-                'question_id' => $question->id,
-                'answer_id' => $question->answers[rand(0, $answersCount-1)]->id
-            ];
-        }
 
         // Assert we get answers
         $questionnaires = QuestionnaireRepository::getAllAnswersForUser($user, Carbon::now()->subMonth(3), Carbon::now());
