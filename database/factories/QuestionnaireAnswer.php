@@ -13,6 +13,6 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(\App\Models\Questionnaire::class, function (Faker $faker) {
+$factory->define(\App\Models\QuestionnaireAnswer::class, function (Faker $faker) {
     return [];
 });
