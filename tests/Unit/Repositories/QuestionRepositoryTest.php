@@ -46,6 +46,7 @@ class QuestionRepositoryTest extends TestCase
      *  Given:  that there X number of questions (and answers) in the database
      *  When:   we want to show ALL questions and answers to the user
      *  Then:   we should get ALL questions and possible answers to show to the user.
+     * @return void
      */
     public function testItFetchesAllQuestionsInDatabase() {
         $questionsCount = 5;

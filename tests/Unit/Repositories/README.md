@@ -1,0 +1,1 @@
+As this gets bigger and slower, we should Mock the DB with an in-memory DB.

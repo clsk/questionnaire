@@ -7,6 +7,7 @@ use App\Models\Question;
 
 class QuestionnaireAnswer extends Model
 {
+    protected $fillable = ['question_id', 'answer_id', 'questionnaire_id'];
     //
     public function question() {
         return $this->belongsTo(Question::class, 'question_id');
