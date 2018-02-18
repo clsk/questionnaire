@@ -54,8 +54,8 @@ class QuestionRepositoryTest extends TestCase
 
         // Create $questionsCount questions in the DB.
         // For each question, create $answerCount answers
-        factory(\App\Models\Question::class, 5)->create()->each(function ($question) {
-            $question->answers()->saveMany(factory(\App\Models\Answer::class, 5)->make());
+        factory(\App\Models\Question::class, $questionsCount)->create()->each(function ($question) use($answersCount) {
+            $question->answers()->saveMany(factory(\App\Models\Answer::class, $answersCount)->make());
         });
 
         // Get all questions and possible answers

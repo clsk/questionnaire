@@ -26,8 +26,8 @@ class QuestionnaireRepositoryTest extends TestCase
 
         // Create $questionsCount questions in the DB.
         // For each question, create $answerCount answers
-        $questions = factory(\App\Models\Question::class, 5)->create()->each(function ($question) {
-            $question->answers()->saveMany(factory(\App\Models\Answer::class, 5)->make());
+        $questions = factory(\App\Models\Question::class, $questionsCount)->create()->each(function ($question) use($answersCount) {
+            $question->answers()->saveMany(factory(\App\Models\Answer::class, $answersCount)->make());
         });
 
         $user = factory(\App\Models\User::class)->create();
@@ -67,6 +67,6 @@ class QuestionnaireRepositoryTest extends TestCase
      *  When:   the user wants to analyze his response(s)
      *  Then:   we should be able to get ALL responses in that time window.
      */
-    public function testItFetchesAllUserAnswersInTimeWindow() {
-    }
+    // public function testItFetchesAllUserAnswersInTimeWindow() {
+    // }
 }
