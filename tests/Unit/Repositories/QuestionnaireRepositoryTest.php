@@ -110,7 +110,6 @@ class QuestionnaireRepositoryTest extends TestCase
         // Assert we get answers
         $questionnaires = QuestionnaireRepository::getAllAnswersForUser($user);
         $this->assertEquals($questionnairesPerPeriodCount*$answersCount*2, $questionnaires->count());
-
     }
 
     /**

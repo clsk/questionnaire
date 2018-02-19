@@ -41,7 +41,7 @@ class QuestionRepository {
    */
   public static function getAllQuestions() {
     // Eager-load answers.
-    // TODO: Should we do pagination to be able handle a large of questions
+    // TODO: Should we do pagination here to be able handle a large of questions?
     return Question::with('answers')->get();
   }
 }
