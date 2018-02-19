@@ -15,7 +15,8 @@ export default class Questionnaire extends Component {
         super();
         this.state = {
             questions: [],
-            answers: new Map()
+            answers: new Map(),
+            submitted: false
         }
         this.postQuestionnaire = this.postQuestionnaire.bind(this);
     }
@@ -30,9 +31,10 @@ export default class Questionnaire extends Component {
             axios.post('/questionnaire', {
                 answers: Array.from(this.state.answers.values())
             }).then((response) => {
-                alert('After this, ideally the user would receive be taken to the dashboard answer history from here');
+                alert('Your answers were submitted successfully!');
                 this.setState({
-                    answers: new Map(window.__questions__.map(question => [question.id, null]))
+                    // answers: new Map(window.__questions__.map(question => [question.id, null])),
+                    submitted: true
                 });
 
             }).catch((err) => {
@@ -64,7 +66,7 @@ export default class Questionnaire extends Component {
     renderQuestion(question) {
         let props = {...question};
         props.selectedAnswerId = this.state.answers.get(question.id);
-        console.log('selectedAnswerId: ', props.selectedAnswerId);
+        props.submitted = this.state.submitted;
         props.answerSelected = (questionId, answerId) => {
             this.state.answers.set(questionId, answerId);
             this.setState({
@@ -83,6 +85,16 @@ export default class Questionnaire extends Component {
       });
     }
 
+    renderSubmitButton() {
+        if (this.state.submitted === false) {
+            return (
+                <button className='btn btn-danger btn-submit-questionnaire' onClick={this.postQuestionnaire}>Submit Questionnaire</button>
+            );
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return (
             <div className="container">
@@ -92,7 +104,7 @@ export default class Questionnaire extends Component {
                             <div className="card-header">Questionnaire</div>
                             <div className="card-body">
                                 {this.state.questions.map(question => this.renderQuestion(question))}
-                                <button className='btn btn-danger btn-submit-questionnaire' onClick={this.postQuestionnaire}>Submit Questionnaire</button>
+                                {this.renderSubmitButton()}
                             </div>
                         </div>
                     </div>

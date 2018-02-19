@@ -57627,7 +57627,8 @@ var Questionnaire = function (_Component) {
 
         _this.state = {
             questions: [],
-            answers: new Map()
+            answers: new Map(),
+            submitted: false
         };
         _this.postQuestionnaire = _this.postQuestionnaire.bind(_this);
         return _this;
@@ -57649,11 +57650,10 @@ var Questionnaire = function (_Component) {
                 axios.post('/questionnaire', {
                     answers: Array.from(this.state.answers.values())
                 }).then(function (response) {
-                    alert('After this, ideally the user would receive be taken to the dashboard answer history from here');
+                    alert('Your answers were submitted successfully!');
                     _this2.setState({
-                        answers: new Map(window.__questions__.map(function (question) {
-                            return [question.id, null];
-                        }))
+                        // answers: new Map(window.__questions__.map(question => [question.id, null])),
+                        submitted: true
                     });
                 }).catch(function (err) {
                     alert('Error: ' + err.toString());
@@ -57713,7 +57713,7 @@ var Questionnaire = function (_Component) {
 
             var props = _extends({}, question);
             props.selectedAnswerId = this.state.answers.get(question.id);
-            console.log('selectedAnswerId: ', props.selectedAnswerId);
+            props.submitted = this.state.submitted;
             props.answerSelected = function (questionId, answerId) {
                 _this3.state.answers.set(questionId, answerId);
                 _this3.setState({
@@ -57731,6 +57731,19 @@ var Questionnaire = function (_Component) {
                     return [question.id, null];
                 }))
             });
+        }
+    }, {
+        key: 'renderSubmitButton',
+        value: function renderSubmitButton() {
+            if (this.state.submitted === false) {
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'button',
+                    { className: 'btn btn-danger btn-submit-questionnaire', onClick: this.postQuestionnaire },
+                    'Submit Questionnaire'
+                );
+            } else {
+                return null;
+            }
         }
     }, {
         key: 'render',
@@ -57760,11 +57773,7 @@ var Questionnaire = function (_Component) {
                                 this.state.questions.map(function (question) {
                                     return _this4.renderQuestion(question);
                                 }),
-                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    'button',
-                                    { className: 'btn btn-danger btn-submit-questionnaire', onClick: this.postQuestionnaire },
-                                    'Submit Questionnaire'
-                                )
+                                this.renderSubmitButton()
                             )
                         )
                     )
@@ -57839,6 +57848,7 @@ var Question = function (_Component) {
 
       var props = _extends({}, answer);
       props.isSelected = isSelected;
+      props.submitted = this.props.submitted;
       props.answerSelected = function (id) {
         // Propagate up
         _this2.props.answerSelected(_this2.props.id, id);
@@ -57900,6 +57910,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /** 
  * Component in charge of rendering a possible answer.
  * Will propagate click event up in the hierarchy Answer->Question->Questionnaire
+ * IFF the questionnaire has not been submitted (this.props.submitted === false)
 */
 
 var Answer = function (_Component) {
@@ -57924,7 +57935,9 @@ var Answer = function (_Component) {
   _createClass(Answer, [{
     key: 'buttonClicked',
     value: function buttonClicked() {
-      this.props.answerSelected(this.props.id);
+      if (this.props.submitted === false) {
+        this.props.answerSelected(this.props.id);
+      }
     }
   }, {
     key: 'render',

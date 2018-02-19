@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 /** 
  * Component in charge of rendering a possible answer.
  * Will propagate click event up in the hierarchy Answer->Question->Questionnaire
+ * IFF the questionnaire has not been submitted (this.props.submitted === false)
 */
 export default class Answer extends Component {
   constructor() {
@@ -19,7 +20,9 @@ export default class Answer extends Component {
    * Note: Redux would make this cleaner
   */
   buttonClicked() {
-    this.props.answerSelected(this.props.id);
+    if (this.props.submitted === false) {
+      this.props.answerSelected(this.props.id);
+    }
   }
 
   render() {

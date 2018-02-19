@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Repositories\QuestionRepository;
 use App\Repositories\QuestionnaireRepository;
 
@@ -27,11 +28,5 @@ class HomeController extends Controller
     {
         $questions = QuestionRepository::getAllQuestions()->toArray();
         return view('home', ['questions' => $questions]);
-    }
-
-    public function postQuestionnaire(Request $request)
-    {
-        $answers = $request->input('answers');
-        QuestionnaireRepository::createQuestionnaire(\Auth::user(), $answers);
     }
 }
