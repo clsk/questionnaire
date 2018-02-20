@@ -79,4 +79,57 @@ class QuestionnaireRepository {
 
     return $query->with('answer')->get();
   }
+
+  /**
+   * Returns a summary of the user's response
+   * @param User $user 
+   * @return Illuminate\Database\Eloquent\Collection
+   */
+  public static function getAnswersSummary(User $user) {
+    /**
+     * @todo Validate $from is not in the future
+     * @todo Validate $to is not in the future
+     * @todo Validate $user is not null
+     */
+
+    $query = DB::table('answers', [])->select(
+      'question_id', 'questions.text AS question_text', 'answers.id AS answer_id', 'answers.text AS answer_text',
+      DB::raw('(
+        SELECT COUNT(*)
+        FROM questionnaire_answers
+        LEFT JOIN questionnaires ON questionnaire_answers.questionnaire_id=questionnaires.id
+        WHERE answer_id=answers.id AND questionnaires.user_id=?
+      )')
+    );
+    $query->addBinding($user->id, 'select');
+    $query = $query->rightJoin('questions', 'questions.id', '=', 'answers.id')->orderBy('question_id');
+
+    $dbResults = $query->get();
+
+    $questions = [];
+    // Build arrays
+    foreach ($dbResults as $dbResult) {
+      if (array_key_exists($dbResult->question_id, $questions)) {
+        $questions[$dbResult->question_id]['answers'][] = [
+          'id' => $dbResult->answer_id,
+          'text' => $dbResult->answer_text,
+          'count' => $dbResult->count
+        ];
+      } else {
+        $questions[$dbResult->question_id] = [
+          'id' => $dbResult->question_id,
+          'text' => $dbResult->question_text,
+          'answers' => [
+            [
+              'id' => $dbResult->answer_id,
+              'text' => $dbResult->answer_text,
+              'count' => $dbResult->count
+            ]
+          ]
+        ];
+      }
+    }
+
+    return $questions;
+  }
 }

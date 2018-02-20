@@ -71,6 +71,7 @@ class QuestionnaireRepositoryTest extends TestCase
         $questionsCount = 5;
         $answersCount = 5;
         $questionnairesPerPeriodCount = 2;
+        $periodsCount = 2;
 
         // Create $questionsCount questions in the DB.
         // For each question, create $answerCount answers
@@ -109,7 +110,7 @@ class QuestionnaireRepositoryTest extends TestCase
 
         // Assert we get answers
         $questionnaires = QuestionnaireRepository::getAllAnswersForUser($user);
-        $this->assertEquals($questionnairesPerPeriodCount*$answersCount*2, $questionnaires->count());
+        $this->assertEquals($questionnairesPerPeriodCount*$answersCount*$periodsCount, $questionnaires->count());
     }
 
     /**
@@ -164,5 +165,63 @@ class QuestionnaireRepositoryTest extends TestCase
         $questionnaires = QuestionnaireRepository::getAllAnswersForUser($user, Carbon::now()->subMonth(3), Carbon::now());
         $this->assertEquals($questionnairesPerPeriodCount*$answersCount, $questionnaires->count());
 
+    }
+
+    /**
+     *  Given:  that a user has responded to questions in the past
+     *          AND those responses are stored in the database
+     *  When:   the user wants to analyze his/her response(s)
+     *  Then:   we should be able to get summary of the responses.
+     */
+    public function testItFetchesAnswersSummary() {
+        // Create questions and answers
+        $questionsCount = 5;
+        $answersCount = 5;
+        $questionnairesPerPeriodCount = 2;
+        $periodsCount = 2;
+
+        // Create $questionsCount questions in the DB.
+        // For each question, create $answerCount answers
+        $questions = factory(\App\Models\Question::class, $questionsCount)->create()
+        ->each(function ($question) use($answersCount) {
+            $question->answers()->saveMany(factory(\App\Models\Answer::class, $answersCount)->make());
+        });
+
+        $user = factory(\App\Models\User::class)->create();
+
+        // Create from last month
+        $questionIndex = 0;
+        $questionnaires = factory(\App\Models\Questionnaire::class, $questionnairesPerPeriodCount)->create([
+            'user_id' => $user->id
+        ])
+        ->each(function ($questionnaire) use($questions, $questionIndex, $answersCount) {
+            $questionnaire->answers()
+            ->saveMany(factory(\App\Models\QuestionnaireAnswer::class, $questions->count())->make([
+                'created_at' => Carbon::now()->subMonths(2),
+                'answer_id' => $questions[$questionIndex]->answers[rand(0, $answersCount-1)]->id, // choose the first answer
+            ]));
+        });
+
+        // Create from 2 years ago.
+        $questionIndex = 0;
+        $questionnaires = factory(\App\Models\Questionnaire::class, $questionnairesPerPeriodCount)->create([
+            'user_id' => $user->id
+        ])
+        ->each(function ($questionnaire) use($questions, $questionIndex, $answersCount) {
+            $questionnaire->answers()
+            ->saveMany(factory(\App\Models\QuestionnaireAnswer::class, $questions->count())->make([
+                'created_at' => Carbon::now()->subYears(2),
+                'answer_id' => $questions[$questionIndex]->answers[rand(0, $answersCount-1)]->id, // choose the first answer
+            ]));
+        });
+
+        // Assert we get answers
+        $summary = QuestionnaireRepository::getAnswersSummary($user);
+        $answersInSummary = array_reduce($summary, function($result, $question) {
+            return $result + array_reduce($question['answers'], function($result, $answer) {
+                return $result + $answer['count'];
+            });
+        });
+        $this->assertEquals($questionnairesPerPeriodCount*$answersCount*$periodsCount, $answersInSummary);
     }
 }
