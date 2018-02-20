@@ -1,6 +1,6 @@
 # Questionnaire
 
-The main purpose of this application is being to track behavioural questions in time.
+The main purpose of this application is being abel to track behavioural questions in time.
 For this, we present a questionnaire to the user everytime they log back in.
 
 TODO:
@@ -8,9 +8,9 @@ TODO:
 
 ## Running
 To run, you can use Laradock (http://laradock.io/)
-1. git clone https://github.com/Laradock/laradock.git
-2. cd laradock
-3. cp env-example .env
+1. `git clone https://github.com/Laradock/laradock.git`
+2. `cd laradock`
+3. `cp env-example .env`
 4. Go to this project's directory
 6. Configure this project's .env (See laradock documentation)
 if using postgres
@@ -22,7 +22,7 @@ if using postgres
     DB_USERNAME=default
     DB_PASSWORD=secret
 ```
-6. docker-compose up -d nginx postgres
+6. Install the docker containers: `docker-compose up -d nginx postgres`
 7. Enter the workspace shell: In laradock's folder run: `docker-compose exec workspace bash`
 8. Run DB migrations: `php artisan migrate`
 9. Run DB seeder: `php artisan db:seed`
