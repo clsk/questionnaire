@@ -1,3 +1,42 @@
+# Questionnaire
+
+The main purpose of this application is being to track behavioural questions in time.
+For this, we present a questionnaire to the user everytime they log back in.
+
+TODO:
+- Implement Dashboard for seeing answer history
+
+## Running
+To run, you can use Laradock (http://laradock.io/)
+1. git clone https://github.com/Laradock/laradock.git
+2. cd laradock
+3. cp env-example .env
+4. Go to this project's directory
+6. Configure this project's .env (See laradock documentation)
+if using postgres
+```
+    DB_CONNECTION=pgsql
+    DB_HOST=postgres
+    DB_PORT=5432
+    DB_DATABASE=default
+    DB_USERNAME=default
+    DB_PASSWORD=secret
+```
+6. docker-compose up -d nginx postgres
+7. Enter the workspace shell: In laradock's folder run: `docker-compose exec workspace bash`
+8. Run DB migrations: `php artisan migrate`
+9. Run DB seeder: `php artisan db:seed`
+10. Open your browser and visit localhost
+11. Enjoy
+
+You may also use Laravel's Homestead vagrant-based environment (https://laravel.com/docs/5.6/homestead)
+
+## Testing
+1. Create database questionnaire_testing
+2. run: `phpunit`
+
+This is a Laravel App; Laravel's README is below:
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
@@ -57,8 +96,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-# Questionnaire
-
-## Testing
-Create database questionnaire_testing
