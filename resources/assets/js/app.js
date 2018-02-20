@@ -13,4 +13,13 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-require('./components/Questionnaire');
+import ReactDOM from 'react-dom';
+import React from 'react';
+import Questionnaire from './components/Questionnaire';
+
+if (document.getElementById('reactapp')) {
+
+    // Grabs all the questions passed by Laravel in global variable __questions__
+    let props = {questions: window.__questions__};
+    ReactDOM.render(<Questionnaire {...props} />, document.getElementById('reactapp'));
+}

@@ -8,12 +8,16 @@ TODO:
 
 ## Running
 To run, you can use Laradock (http://laradock.io/)
-1. `git clone https://github.com/Laradock/laradock.git`
-2. `cd laradock`
-3. `cp env-example .env`
-4. Go to this project's directory
-6. Configure this project's .env (See laradock documentation)
-if using postgres
+1. Make sure you have Docker installed (https://www.docker.com/get-docker)
+2. `git clone https://github.com/clsk/questionnaire.git`
+3. `git clone https://github.com/Laradock/laradock.git`
+4. `cd laradock`
+5. `cp env-example .env`
+6. Edit .env file with your favorite editor. The only thing you should need to change is the APPLICATION directory. ie: `APPLICATION=../questionnaire/`
+7. Go to this project's directory: `cd ../questionnaire`
+8. `cp .env.example .env`
+9. Configure this project's .env (See laradock documentation for services' credentials).
+if using postgres replace DB connection with:
 ```
     DB_CONNECTION=pgsql
     DB_HOST=postgres
@@ -22,12 +26,14 @@ if using postgres
     DB_USERNAME=default
     DB_PASSWORD=secret
 ```
-6. Install the docker containers: `docker-compose up -d nginx postgres`
-7. Enter the workspace shell: In laradock's folder run: `docker-compose exec workspace bash`
-8. Run DB migrations: `php artisan migrate`
-9. Run DB seeder: `php artisan db:seed`
-10. Open your browser and visit localhost
-11. Enjoy
+10. Install the docker containers: `docker-compose up -d nginx php-fpm postgres workspace`
+11. Enter the workspace shell: In laradock's folder run: `docker-compose exec workspace bash`
+12. Install composer packages: `composer install`
+12. Run DB migrations: `php artisan migrate`
+13. Run DB seeder: `php artisan db:seed`
+13. Generate Laravel encryption key: `php artisan key:generate`
+14. Open your browser and visit localhost
+15. Enjoy
 
 You may also use Laravel's Homestead vagrant-based environment (https://laravel.com/docs/5.6/homestead)
 

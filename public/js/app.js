@@ -23076,8 +23076,15 @@ module.exports = __webpack_require__(219);
 
 /***/ }),
 /* 92 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_dom__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Questionnaire__ = __webpack_require__(224);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -23093,7 +23100,16 @@ __webpack_require__(93);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-__webpack_require__(224);
+
+
+
+
+if (document.getElementById('reactapp')) {
+
+  // Grabs all the questions passed by Laravel in global variable __questions__
+  var props = { questions: window.__questions__ };
+  __WEBPACK_IMPORTED_MODULE_0_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_Questionnaire__["a" /* default */], props), document.getElementById('reactapp'));
+}
 
 /***/ }),
 /* 93 */
@@ -57588,12 +57604,9 @@ module.exports = ReactDOMInvalidARIAHook;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Question__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Question__ = __webpack_require__(225);
 
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -57609,12 +57622,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
 /** 
  * Main questionnaire component
- * This component grabs all the questions passed by laravel in global variable __questions__
  * This components will take care of rendering all the Question component instances.
- * 1 for each element in window.__questions__
+ * 1 for each element in this.props.questions
 */
 
 var Questionnaire = function (_Component) {
@@ -57652,7 +57663,6 @@ var Questionnaire = function (_Component) {
                 }).then(function (response) {
                     alert('Your answers were submitted successfully!');
                     _this2.setState({
-                        // answers: new Map(window.__questions__.map(question => [question.id, null])),
                         submitted: true
                     });
                 }).catch(function (err) {
@@ -57720,7 +57730,7 @@ var Questionnaire = function (_Component) {
                     answers: new Map(_this3.state.answers) // mutate
                 });
             };
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Question__["a" /* default */], props);
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Question__["a" /* default */], props);
         }
     }, {
         key: 'componentDidMount',
@@ -57770,7 +57780,7 @@ var Questionnaire = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'div',
                                 { className: 'card-body' },
-                                this.state.questions.map(function (question) {
+                                this.props.questions.map(function (question) {
                                     return _this4.renderQuestion(question);
                                 }),
                                 this.renderSubmitButton()
@@ -57785,12 +57795,7 @@ var Questionnaire = function (_Component) {
     return Questionnaire;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (Questionnaire);
-
-
-if (document.getElementById('reactapp')) {
-    __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Questionnaire, null), document.getElementById('reactapp'));
-}
+/* harmony default export */ __webpack_exports__["a"] = (Questionnaire);
 
 /***/ }),
 /* 225 */

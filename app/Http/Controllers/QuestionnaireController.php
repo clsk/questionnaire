@@ -11,6 +11,11 @@ class QuestionnaireController extends Controller
     //
     public function post(Request $request, Response $response)
     {
+        // Validate input
+        $request->validate([
+            'answers' => 'required|array|min:1'
+        ]);
+
         $answers = $request->input('answers');
 
         $questionnaireId = QuestionnaireRepository::createQuestionnaire(\Auth::user(), $answers);

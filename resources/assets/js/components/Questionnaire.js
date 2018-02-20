@@ -1,14 +1,12 @@
 'use strict';
 
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Question from './Question';
 
 /** 
  * Main questionnaire component
- * This component grabs all the questions passed by laravel in global variable __questions__
  * This components will take care of rendering all the Question component instances.
- * 1 for each element in window.__questions__
+ * 1 for each element in this.props.questions
 */
 export default class Questionnaire extends Component {
     constructor() {
@@ -33,7 +31,6 @@ export default class Questionnaire extends Component {
             }).then((response) => {
                 alert('Your answers were submitted successfully!');
                 this.setState({
-                    // answers: new Map(window.__questions__.map(question => [question.id, null])),
                     submitted: true
                 });
 
@@ -103,7 +100,7 @@ export default class Questionnaire extends Component {
                         <div className="card card-default">
                             <div className="card-header">Questionnaire</div>
                             <div className="card-body">
-                                {this.state.questions.map(question => this.renderQuestion(question))}
+                                {this.props.questions.map(question => this.renderQuestion(question))}
                                 {this.renderSubmitButton()}
                             </div>
                         </div>
@@ -114,6 +111,3 @@ export default class Questionnaire extends Component {
     }
 }
 
-if (document.getElementById('reactapp')) {
-    ReactDOM.render(<Questionnaire />, document.getElementById('reactapp'));
-}
