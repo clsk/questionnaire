@@ -64,6 +64,7 @@ export default class Questionnaire extends Component {
         let props = {...question};
         props.selectedAnswerId = this.state.answers.get(question.id);
         props.submitted = this.state.submitted;
+        props.key = question.id;
         props.answerSelected = (questionId, answerId) => {
             this.state.answers.set(questionId, answerId);
             this.setState({
@@ -78,16 +79,21 @@ export default class Questionnaire extends Component {
     componentDidMount() {
       this.setState({
           questions: window.__questions__,
-          answers: new Map(window.__questions__.map(question => [question.id, null]))
+          answers: new Map(this.props.questions.map(question => [question.id, null]))
       });
     }
 
+    /** 
+     * Renders the Submit button.
+     * Logic: Render button IFF answers have not been submitted. Otherwise, don't render.
+    */
     renderSubmitButton() {
         if (this.state.submitted === false) {
             return (
                 <button className='btn btn-danger btn-submit-questionnaire' onClick={this.postQuestionnaire}>Submit Questionnaire</button>
             );
         } else {
+            // Hide submit button if answers were submitted
             return null;
         }
     }

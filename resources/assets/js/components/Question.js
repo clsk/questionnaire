@@ -24,6 +24,7 @@ export default class Question extends Component {
     let props = {...answer};
     props.isSelected = isSelected;
     props.submitted = this.props.submitted;
+    props.key = answer.id;
     props.answerSelected = (id) => {
       // Propagate up
       this.props.answerSelected(this.props.id, id);
