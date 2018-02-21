@@ -92,7 +92,7 @@ class QuestionnaireRepository {
      * @todo Validate $user is not null
      */
 
-    $query = DB::table('answers', [])->select(
+    $query = DB::table('answers')->select(
       'question_id', 'questions.text AS question_text', 'answers.id AS answer_id', 'answers.text AS answer_text',
       DB::raw('(
         SELECT COUNT(*)
@@ -102,7 +102,7 @@ class QuestionnaireRepository {
       )')
     );
     $query->addBinding($user->id, 'select');
-    $query = $query->rightJoin('questions', 'questions.id', '=', 'answers.id')->orderBy('question_id');
+    $query = $query->rightJoin('questions', 'answers.question_id', '=', 'questions.id')->orderBy('question_id');
 
     $dbResults = $query->get();
 

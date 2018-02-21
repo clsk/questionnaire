@@ -27,6 +27,7 @@ class HomeController extends Controller
     public function index()
     {
         $questions = QuestionRepository::getAllQuestions()->toArray();
-        return view('home', ['questions' => $questions]);
+        $summary = QuestionnaireRepository::getAnswersSummary(\Auth::user());
+        return view('home', ['questions' => $questions, 'summary' => $summary]);
     }
 }
