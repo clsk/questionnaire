@@ -86,12 +86,6 @@ class QuestionnaireRepository {
    * @return Illuminate\Database\Eloquent\Collection
    */
   public static function getAnswersSummary(User $user) {
-    /**
-     * @todo Validate $from is not in the future
-     * @todo Validate $to is not in the future
-     * @todo Validate $user is not null
-     */
-
     $query = DB::table('answers')->select(
       'question_id', 'questions.text AS question_text', 'answers.id AS answer_id', 'answers.text AS answer_text',
       DB::raw('(
